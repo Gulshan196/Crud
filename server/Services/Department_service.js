@@ -2,5 +2,10 @@
 
 
 class DepartmentService{
-    static 
+    static deleteEmployeeRecord(){
+           const {empid} = req.body
+           
+    }
 }
+
+export default DepartmentService
