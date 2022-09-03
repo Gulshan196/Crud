@@ -26,7 +26,7 @@ class StudentsServices {
     }
 
     static showStudentData = async (req, res) => {
-        let data = await client.query(`select * from student`)
+        let data = await client.query(`select * from student order by studentid`)
 
         res.json(data.rows)
     }
