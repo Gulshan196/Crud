@@ -25,13 +25,7 @@ import client from "../connect.js"
         }
       }
       try {
-        const student = await client.query(`SELECT *
-
-        FROM student
-    
-         ORDER BY student.studentid 
-    
-         LIMIT  ${limit}   OFFSET ${page-1}`) 
+        const student = await client.query(`SELECT * FROM student ORDER BY student.studentid LIMIT  ${limit}   OFFSET ${page-1}`) 
         // results.results = student.rows
 
     results.results = student.rows
