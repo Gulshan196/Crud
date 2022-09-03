@@ -10,12 +10,8 @@ import client from "../connect.js"
       const endIndex = page * limit
   
       const results = {}
-
-      let studentid = await client.query(`select studentid from student`)
-
-      // arr.length
   
-      if (endIndex < studentid.rows.length) {
+      if (endIndex < (await client.query(`SELECT count(*) FROM student`)).rows[0].count) {
         results.next = {
           page: page + 1,
           limit: limit
