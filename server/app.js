@@ -6,8 +6,11 @@ import express from 'express'
 import route from './routes/Employees.js'
 import route1 from './routes/student.js'
 import router from './routes/requestQueryModel.js'
+import cors from 'cors'
 const app = express();
-
+app.use(cors({
+    origin: "http://localhost:3000"
+}))
 app.use(express.json())
 
 // const users = [{ id: 1, name: 'user1' },
