@@ -6,9 +6,11 @@ class EmployeesServices {
     static EmployeesRegister = async (req, res) => {
         const { name, empid, password, confirm_password } = req.body
 
+        const emp = await client.query(`SELECT * FROM employees where employees.empid = '${empid}'`)
+
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password, salt)
-        if (password == confirm_password) {
+        if (password == confirm_password && emp.rows.length == 0) {
 
             await client.query(`insert into employees(empid,empname,password) 
                         values('${empid}','${name}','${hashPassword}')`)
@@ -27,9 +29,10 @@ class EmployeesServices {
     static EmployeesLogin = async (req, res) => {
         const { empid, password } = req.body
         const emp = await client.query(`SELECT * FROM employees where employees.empid = '${empid}'`)
-        const p = emp.rows[0].password
-        console.log(emp.rows[0]);
-        if (emp) {
+        
+        console.log(emp);
+        if (emp.rows.length!=0) {
+            const p = emp.rows[0].password
             const isMatch = await bcrypt.compare(password, p)
             if (emp.rows[0].empid == empid && isMatch) {
                 const token = jwt.sign({ userID: empid }
