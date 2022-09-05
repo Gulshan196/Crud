@@ -1,11 +1,13 @@
 import client from '../connect.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+
 client.connect()
+
 class EmployeesServices {
+
     static EmployeesRegister = async (req, res) => {
         const { name, empid, password, confirm_password } = req.body
-
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password, salt)
         if (password == confirm_password) {
@@ -15,7 +17,6 @@ class EmployeesServices {
             // generate json web token 
             const token = jwt.sign({ userID: empid }
                 , process.env.JWT_SECRET_KEY, { expiresIn: '5d' })
-
             res.send({ "message": "sucess", "token": token })
 
         }
