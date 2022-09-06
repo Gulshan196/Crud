@@ -6,8 +6,15 @@ import client from "../connect.js"
       const page = parseInt(req.query.page)
       const limit = parseInt(req.query.limit)
   
-      const startIndex = (page - 1) * limit
+      const startIndex = page *(limit-1)
       const endIndex = page * limit
+      let offset
+      if(page==1){
+        offset= 0
+      }
+      else{
+       offset = (page-1)*limit
+      }
   
       const results = {}
   
@@ -25,7 +32,7 @@ import client from "../connect.js"
         }
       }
       try {
-        const student = await client.query(`SELECT * FROM student ORDER BY student.studentid LIMIT  ${limit}   OFFSET ${page-1}`) 
+        const student = await client.query(`SELECT * FROM student ORDER BY student.studentid LIMIT  ${limit}   OFFSET ${offset}`) 
         // results.results = student.rows
 
     results.results = student.rows
