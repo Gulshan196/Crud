@@ -1,5 +1,17 @@
 import jwt from "jsonwebtoken"
 import client from '../connect.js'
+
+var code_verifier = 'some-random-string'
+      
+// const crypto = require('crypto')
+import crypto from 'crypto'
+import base64url from 'base64url'
+
+// const base64url = require('base64url')
+
+var hash = crypto.createHash('sha256').update(code_verifier).digest();
+export var code_challenge = base64url.encode(hash)
+      
 class Authentication{
 
     static checkUserAuth = async(req , res , next)=>{
@@ -12,7 +24,7 @@ class Authentication{
             token = authorization.split(' ')[1]
     
             // verify token
-            const {userID} = jwt.verify(token , process.env.JWT_SECRET_KEY)
+            const {userID} = jwt.verify(token , code_challenge)
             // console.log(userID)
     
             // get user from tokken

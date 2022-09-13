@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "base64url": "^3.0.1",
+    "oidc-client": "^1.11.5"
+  }
+}

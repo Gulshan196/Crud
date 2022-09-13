@@ -2,6 +2,7 @@ import client from '../connect.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 client.connect()
+import { code_challenge } from '../middleware/authenticate.js'
 class EmployeesServices {
     static EmployeesRegister = async (req, res) => {
         const { name, empid, password, confirm_password } = req.body
@@ -16,7 +17,7 @@ class EmployeesServices {
                         values('${empid}','${name}','${hashPassword}')`)
             // generate json web token 
             const token = jwt.sign({ userID: empid }
-                , process.env.JWT_SECRET_KEY, { expiresIn: '5d' })
+                , code_challenge, { expiresIn: '5d' })
 
             res.send({ "message": "sucess", "token": token })
 
@@ -36,7 +37,7 @@ class EmployeesServices {
             const isMatch = await bcrypt.compare(password, p)
             if (emp.rows[0].empid == empid && isMatch) {
                 const token = jwt.sign({ userID: empid }
-                    , process.env.JWT_SECRET_KEY, { expiresIn: '5d' })
+                    , code_challenge, { expiresIn: '5d' })
                 res.send({ "status": "success", "message": "logged in", "token": token })
             } else {
                 res.send({ "status": "failed", "message": "invalid id or password" })
